@@ -12,6 +12,7 @@
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Messages.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Users.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Login.java
+/opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Folders.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Friends.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/entity/Message.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/entity/Sessions.java

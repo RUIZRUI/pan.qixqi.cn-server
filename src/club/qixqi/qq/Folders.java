@@ -62,6 +62,9 @@ public class Folders extends HttpServlet{
                     String createLinkTime = df.format(new Date());
                     FileLink fileLink = new FileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
                     FileLinkUtil.add(fileLink);
+
+                    // 将 folderLinkId 添加到父文件夹下
+                    FileLinkUtil.addChildFolder(parent, linkId);
                     message.put("response", "文件夹创建成功");
                 }
             }else{
