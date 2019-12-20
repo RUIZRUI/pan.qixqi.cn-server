@@ -1,0 +1,8 @@
+#register_form{
+    text-align: center;
+    margin-top: 50px;
+}
+
+#register_form input{
+    margin-bottom: 20px;
+}
