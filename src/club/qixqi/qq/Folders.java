@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -66,6 +68,26 @@ public class Folders extends HttpServlet{
                     // 将 folderLinkId 添加到父文件夹下
                     FileLinkUtil.addChildFolder(parent, linkId);
                     message.put("response", "文件夹创建成功");
+                }
+            }else if("rename".equals(method)){
+                if(request.getParameter("linkId") == null || request.getParameter("newName") == null){
+                    message.put("error", "请提交完整信息");
+                }else if("".equals(request.getParameter("linkId")) || "".equals(request.getParameter("newName"))){
+                    message.put("error", "请提交正确信息");
+                }else{
+                    int linkId = Integer.parseInt(request.getParameter("linkId"));
+                    String newName = request.getParameter("newName");
+                    Map<String, String> map = new HashMap<String, String>();
+                    if(FileLinkUtil.isFolder(linkId)){      // 文件夹重命名
+                        map.put("folderName", newName);
+                    }else{      // 文件重命名
+                        map.put("fileName", newName);
+                    }
+                    if(FileLinkUtil.edit(linkId, map)){
+                        message.put("response", "重命名成功");
+                    }else{
+                        message.put("error", "重命名失败");
+                    }
                 }
             }else{
                 message.put("error", "你搞的什么操作");

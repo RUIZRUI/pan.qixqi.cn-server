@@ -18,6 +18,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import club.qixqi.qq.entity.Files;
 import club.qixqi.qq.util.FilesUtil;
 import club.qixqi.qq.entity.FileLink;
@@ -52,13 +55,13 @@ public class FileUpload extends HttpServlet{
         response.setContentType("text/html; charset=utf-8");
         PrintWriter out = response.getWriter();
 
-        String message = "";
+        // String message = "";
+        JSONObject message = new JSONObject();
 
         // 检测是否上传为多媒体文件
         if(!ServletFileUpload.isMultipartContent(request)){
-            message = "提交文件必须为多媒体文件";
-            request.setAttribute("message", message);
-            
+            message.put("error", "提交文件必须为多媒体文件");
+            // request.setAttribute("message", message);
         }else{
             // 获取userId
             // if(request.getParameter("userId") == null || request.getParameter("parent") == null){
@@ -155,20 +158,21 @@ public class FileUpload extends HttpServlet{
                             File storeFile = new File(filePath);
                             // 文件已存在
                             if(storeFile.exists()){
-                            message = "文件已存在，重新覆盖";
+                                message.put("error", "文件已存在，重新覆盖");
                             }
                             item.write(storeFile);
-                            message = "文件上传成功";
+                            // message.put("response", "文件上传成功");
+                            message.put("response", JSON.toJSONString(fileLink));
                         }
                     }
                 }
             } catch(Exception e){
-                message = "error";
+                message.put("error", "error");
                 e.printStackTrace();
                 System.out.println("Exception: " + e.getMessage());
             }
         }
-        out.println(message);
+        out.println(message.toJSONString());
     }
 
     private String getFileType(String fileName){

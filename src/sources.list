@@ -5,6 +5,7 @@
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/util/FileLinkUtil.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/util/FriendsUtil.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/util/SessionsUtil.java
+/opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/util/FileShareUtil.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/SessionServlet.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Test.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/FileDownload.java
@@ -12,6 +13,7 @@
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Messages.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Users.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Login.java
+/opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/FileShare.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Folders.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/Friends.java
 /opt/apache-tomcat-9.0.24/webapps/qq/src/club/qixqi/qq/entity/Message.java

@@ -172,3 +172,23 @@ create table if not exists `qqfile_link`(
 select qqfile.fileName
 from qqfile, qqfile_link
 where qqfile_link.linkId = ? and qqfile.fileId = qqfile_link.fileId 
+
+
+
+
+
+
+-- 分享链接表
+create table if not exists `qqfile_share`(
+    `shareId` int(11) auto_increment primary key,
+    `linkId` int(11),
+    `shareMask` varchar(255) not null,      -- 掩码
+    `sharePass` char(4) not null,        -- 4位提取码
+    `createShareTime` datetime not null,      -- 创建时间
+    `endShareTime` datetime        -- 分享结束时间
+) ENGINE=InnoDB default charset=utf8;
+
+
+select qqfile_share.shareMask, qqfile_share.sharePass
+from qqfile_link, qqfile_share
+where qqfile_link.userId = ? and qqfile_link.linkId = qqfile_share.linkId

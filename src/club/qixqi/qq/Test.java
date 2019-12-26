@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.naming.NamingException;
 
@@ -188,6 +190,22 @@ public class Test{
         JSONObject jsonObject9 = JSON.parseObject(strJson2);
         // System.out.println(jsonObject9.toJSONString());
         
+
+        Random random = new Random();
+        StringBuilder builder = new StringBuilder();
+        for(int i=0; i<4; i++){
+            int key = random.nextInt(36);
+            if(key < 10){       // 产生数字
+                builder.append(key);
+            }else{              // 产生小写字母
+                builder.append((char)(key+87));
+            }
+        }
+        System.out.println(builder.toString());
+
+
+        String shareMask = UUID.randomUUID().toString().replaceAll("-", "");
+        System.out.println(shareMask);
 
 
     }

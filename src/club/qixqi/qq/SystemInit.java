@@ -161,6 +161,21 @@ public class SystemInit extends HttpServlet{
             out.println("<h3 align='center'>创建 qqfile_link 表成功</h3>\n");
 
 
+            // 创建表 qqfile_share
+            sql = "create table if not exists `qqfile_share`( " +
+                "`shareId` int(11) auto_increment primary key, " +
+                "`linkId` int(11), " +
+                "`shareMask` varchar(255) not null, " +
+                "`sharePass` char(4) not null, " +
+                "`createShareTime` datetime not null, " +
+                "`endShareTime` datetime " +
+                ") ENGINE=InnoDB default charset=utf8;";
+            pst = conn.prepareStatement(sql);
+            pst.executeUpdate();
+            out.println("<h3 align='center'>创建 qqfile_share 表成功</h3>\n");
+
+
+
 
             out.println("<h2 align='center'>QQ系统初始化成功</h2>\n");
             pst.close();
