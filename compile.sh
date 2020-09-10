@@ -27,6 +27,9 @@ function compile(){
     # jar -cvfm $cur_dir/qq.jar $cur_dir/MANIFEST.MF *
     # 赋予可执行权限
     # sudo chmod a+x $cur_dir/qq.jar
+
+    # 生成 war包（当前目录下）
+    # jar -cvf qq.war *
 }
 
 compile
