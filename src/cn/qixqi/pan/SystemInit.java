@@ -31,9 +31,9 @@ public class SystemInit extends HttpServlet{
 
             // 创建表 qquser
             String sql = "create table if not exists `qquser`(" +
-                "`id` int(11) not null check(len(`id`) > 5), "+
+                "`id` int(11) not null, "+
                 "`username` varchar(255) not null, " +
-                "`password` varchar(255) not null check(len(`password`) between 6 and 20), " + 
+                "`password` varchar(255) not null, " + 
                 "`sex` char(1) not null default 'u', " +        // m男  f女  u未知
                 "`phone_num` char(11) unique, " + 
                 "`icon` varchar(255) default 'icon_default.png'," +
@@ -126,7 +126,7 @@ public class SystemInit extends HttpServlet{
 
             // 创建表 qqfile
             sql = "create table if not exists `qqfile`( " +
-                "`fileId` int(11) not null check(len(`fileId`) > 5), " +
+                "`fileId` int(11) not null, " +
                 "`fileName` varchar(255) not null, " +
                 "`fileType` varchar(25), " +
                 "`fileSize` int(15), " +

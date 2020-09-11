@@ -1,6 +1,8 @@
 /*
     1. qqfriends表的userId1和userId2应该有约束条件：必在qquser表中
     2. user表的phone_num应该加入unique约束
+    3. mysql 不支持check约束
+    4. mariadb 10.2 以上版本开始支持check约束，但是check约束内不能有 len()函数
 */
 
 -- 使用 pan 数据库

@@ -7,7 +7,7 @@ cur_dir=$(pwd)    # 项目文件当前目录
 function compile(){
     qq=$cur_dir     # java 项目文件目录
     qq_src=$cur_dir/src     # 源代码
-    qq_lib=$cur_dir/lib     # 依赖库
+    qq_lib=$cur_dir/WEB-INF/lib     # 依赖库
     # echo $qq
     # echo $qq_src
     # echo $qq_lib
