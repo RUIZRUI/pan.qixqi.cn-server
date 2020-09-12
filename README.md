@@ -10,3 +10,9 @@
     # 实时查看日志，在tomcat/logs下执行
     tail -f catalina.out
     ```
+
+
+
+### Problems
+
+1. 文件上传需要的jar包，commons-fileupload.jar, commons-io.jar, commons-logging.jar（可能需要）
