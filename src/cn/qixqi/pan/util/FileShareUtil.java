@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class FileShareUtil{
 
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static String domain = "http://qixqi.cn:8080/";
+    private static String domain = "https://qixqi.cn:8443/";
 
     private static Connection initConn() throws NamingException, SQLException{
         Context cxt = new InitialContext();
