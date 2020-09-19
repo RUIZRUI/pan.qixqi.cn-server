@@ -15,4 +15,5 @@
 
 ### Problems
 
-1. 文件上传需要的jar包，commons-fileupload.jar, commons-io.jar, commons-logging.jar（可能需要）
+1. [已解决]~~文件上传需要的jar包，commons-fileupload.jar, commons-io.jar, commons-logging.jar（可能需要）~~
+2. 文件夹分享有逻辑问题：获取分享时应该将文件夹下的链接全部复制一遍，否则文件夹下的文件下载、分享都不能成功
