@@ -13,7 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cn.qixqi.pan.entity.Message;
+import cn.qixqi.pan.entity.PanMessage;
 
 public class MessageUtil{
 
@@ -58,7 +58,7 @@ public class MessageUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static boolean add(Message message) throws NamingException, SQLException{
+    public static boolean add(PanMessage message) throws NamingException, SQLException{
         boolean flag = false;
         if(message == null){
             return flag;
@@ -67,16 +67,16 @@ public class MessageUtil{
         String sql = "insert into qqmessage(msg_id, userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setInt(1, message.getMsgId());
-        pst.setInt(2, message.getUserId());
-        pst.setInt(3, message.getUserId1());
+        pst.setInt(2, message.getUid());
+        pst.setInt(3, message.getUid1());
         pst.setString(4, message.getUsername1());
-        pst.setString(5, message.getUserIcon1());
-        pst.setInt(6, message.getToId());
-        pst.setString(7, Character.toString(message.getChatType()));
+        pst.setString(5, message.getAvatar1());
+        pst.setInt(6, message.getReceiverId());
+        pst.setString(7, Character.toString(message.getSessionType()));
         pst.setString(8, Character.toString(message.getMsgType()));
         pst.setString(9, message.getMsg());
-        pst.setString(10, message.getSendTime());
-        pst.setString(11, Character.toString(message.getSendStatus()));
+        pst.setString(10, message.getMsgTime());
+        pst.setString(11, Character.toString(message.getMsgStatus()));
         pst.executeUpdate();
         flag = true;
         pst.close();
@@ -177,12 +177,12 @@ public class MessageUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static List<Message> searchAll(int userId) throws NamingException, SQLException{
+    public static List<PanMessage> searchAll(int userId) throws NamingException, SQLException{
         if(userId < 100000){
             return null;
         }
         initConn();
-        List<Message> messageList = new ArrayList<>();
+        List<PanMessage> messageList = new ArrayList<>();
         String sql = "select msg_id, userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status from qqmessage where userId1 = ? or toId = ? ";
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setInt(1, userId);
@@ -200,7 +200,7 @@ public class MessageUtil{
             String msg = rs.getString("msg");
             String send_time = df.format(rs.getTimestamp("send_time"));
             char send_status = rs.getString("send_status").toCharArray()[0];
-            Message message = new Message(msg_id, _userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status);
+            PanMessage message = new PanMessage(msg_id, _userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status);
             messageList.add(message);
         }
         rs.close();
@@ -223,12 +223,12 @@ public class MessageUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static List<Message> searchAll(int userId1, int userId2) throws NamingException, SQLException{
+    public static List<PanMessage> searchAll(int userId1, int userId2) throws NamingException, SQLException{
         if(userId1 < 100000 || userId2 < 100000){
             return null;
         }
         initConn();
-        List<Message> messageList = new ArrayList<>();
+        List<PanMessage> messageList = new ArrayList<>();
         String sql = "select msg_id, userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status from qqmessage where (userId1 = ? and toId = ?) or (userId1 = ? and toId = ?) ";
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setInt(1, userId1);
@@ -248,7 +248,7 @@ public class MessageUtil{
             String msg = rs.getString("msg");
             String send_time = df.format(rs.getTimestamp("send_time"));
             char send_status = rs.getString("send_status").toCharArray()[0];
-            Message message = new Message(msg_id, _userId, _userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status);
+            PanMessage message = new PanMessage(msg_id, _userId, _userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status);
             messageList.add(message);
         }
         rs.close();
@@ -269,8 +269,8 @@ public class MessageUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static Message search(int msgId) throws NamingException, SQLException{
-        Message message = null;
+    public static PanMessage search(int msgId) throws NamingException, SQLException{
+        PanMessage message = null;
         if(msgId < 1000000){
             return message;
         }
@@ -290,7 +290,7 @@ public class MessageUtil{
             String msg = rs.getString("msg");
             String send_time = df.format(rs.getTimestamp("send_time"));
             char send_status = rs.getString("send_status").toCharArray()[0];
-            message = new Message(msgId, _userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status);
+            message = new PanMessage(msgId, _userId, userId1, username1, userIcon1, toId, chat_type, msg_type, msg, send_time, send_status);
         }
         rs.close();
         pst.close();

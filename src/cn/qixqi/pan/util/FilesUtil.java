@@ -15,7 +15,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cn.qixqi.pan.entity.Files;
+import cn.qixqi.pan.entity.PanFile;
 
 /**
  * todo
@@ -74,7 +74,7 @@ public class FilesUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static boolean add(Files files) throws NamingException, SQLException{
+    public static boolean add(PanFile files) throws NamingException, SQLException{
         boolean flag = false;
         if(files == null){
             return flag;

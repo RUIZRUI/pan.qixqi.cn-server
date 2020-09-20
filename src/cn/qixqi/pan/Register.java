@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.naming.NamingException;
 
-import cn.qixqi.pan.entity.User;
+import cn.qixqi.pan.entity.PanUser;
 import cn.qixqi.pan.util.UserUtil;
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFileLink;
 import cn.qixqi.pan.util.FileLinkUtil;
 
 
@@ -76,15 +76,15 @@ public class Register extends HttpServlet{
             // pst.executeUpdate();
 
 
-            User user = new User(id, username, password, sex.toCharArray()[0], phone_num, df.format(now), df.format(now));
+            PanUser user = new PanUser(username, password, "", phone_num);
             if(UserUtil.add(user)){
                 // out.println("success");
-                User newUser = UserUtil.loginSearch(id, password);
+                PanUser newUser = UserUtil.loginSearch(id, password);
                 if(newUser != null){ 
                     // 注册登录成功后，创建用户的根文件夹
                     int linkId = (int)((Math.random()*9+1)*1000000);    // 7位随机整数
                     String createLinkTime = df.format(new Date());
-                    FileLink rootFolder = new FileLink(linkId, id, -1, null, null, -1, 'y', username, "", "", 'y', -1, createLinkTime);
+                    PanFileLink rootFolder = new PanFileLink(linkId, id, -1, null, null, -1, 'y', username, "", "", 'y', -1, createLinkTime);
                     if(FileLinkUtil.add(rootFolder)){   // 新建根文件夹成功
                         out.println(JSON.toJSONString(newUser));        
                     }else{  // 新建根文件夹失败

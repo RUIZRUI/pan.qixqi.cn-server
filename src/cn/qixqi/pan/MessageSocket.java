@@ -18,7 +18,7 @@ import javax.websocket.server.ServerEndpoint;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.qixqi.pan.entity.Message;
+import cn.qixqi.pan.entity.PanMessage;
 import cn.qixqi.pan.util.MessageUtil;
 
 /**
@@ -85,7 +85,7 @@ public class MessageSocket{
                 requestJson1.put("method", "addResponse");
                 responseJson.put("request", requestJson1);
                 int msgId = (int)((Math.random()*9+1)*1000000);     // 7位随机数
-                Message addMessage = JSON.parseObject(jsonObject.getString("message"), Message.class);
+                PanMessage addMessage = JSON.parseObject(jsonObject.getString("message"), PanMessage.class);
                 addMessage.setMsgId(msgId);
                 boolean flag = MessageUtil.add(addMessage);
                 if(flag){
@@ -102,7 +102,7 @@ public class MessageSocket{
                 }
             }else if("searchAll".equals(method)){
                 responseJson.put("request", jsonObject);
-                List<Message> messageList;
+                List<PanMessage> messageList;
                 int userId1 = jsonObject.getIntValue("userId1");
                 if(jsonObject.containsKey("userId2")){
                     int userId2 = jsonObject.getIntValue("userId2");
@@ -184,14 +184,14 @@ public class MessageSocket{
      * 推送消息给接收方
      * @param addMessage 发送的消息
      */
-    public void pushToReceiver(Message addMessage){
+    public void pushToReceiver(PanMessage addMessage){
         JSONObject pushJson = new JSONObject();     // 推送
         JSONObject requestJson2 = new JSONObject(); // 推送的request
         requestJson2.put("method", "addPush");
         pushJson.put("request", requestJson2);
         pushJson.put("push", JSON.toJSONString(addMessage));
 
-        int toId = addMessage.getToId();
+        int toId = addMessage.getReceiverId();
         socketList.get(toId).sendMessage(pushJson.toJSONString());
     }
 

@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFileLink;
 import cn.qixqi.pan.util.FileLinkUtil;
 
 
@@ -62,7 +62,7 @@ public class Folders extends HttpServlet{
                     char isRoot = 'n';
                     int parent = Integer.parseInt(request.getParameter("parent"));
                     String createLinkTime = df.format(new Date());
-                    FileLink fileLink = new FileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
+                    PanFileLink fileLink = new PanFileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
                     FileLinkUtil.add(fileLink);
 
                     // 将 folderLinkId 添加到父文件夹下

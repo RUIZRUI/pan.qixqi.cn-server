@@ -16,21 +16,21 @@ import javax.naming.NamingException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.qixqi.pan.entity.Friend;
-import cn.qixqi.pan.entity.Message;
-import cn.qixqi.pan.entity.User;
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFriend;
+import cn.qixqi.pan.entity.PanMessage;
+import cn.qixqi.pan.entity.PanUser;
+import cn.qixqi.pan.entity.PanFileLink;
 import cn.qixqi.pan.util.FileLinkUtil;
 
 public class Test{
     public static void main(String[] args){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Friend friend1 = new Friend(11, "qixqi", 'f', "19818965587", "default.png", "1999-12-14", df.format(new Date()), df.format(new Date()), df.format(new Date()));
+        PanFriend friend1 = new PanFriend(11, "qixqi", 'f', "19818965587", "default.png", "1999-12-14", df.format(new Date()), df.format(new Date()), df.format(new Date()));
         // System.out.println(JSON.toJSONString(friend1));
-        Friend friend2 = new Friend(12, "qixqi", 'f', "19818965587", "default.png", "1999-12-14", df.format(new Date()), df.format(new Date()), df.format(new Date()));
-        Friend friend3 = new Friend(13, "qixqi", 'f', "19818965587", "default.png", "1999-12-14", df.format(new Date()), df.format(new Date()), df.format(new Date()));
+        PanFriend friend2 = new PanFriend(12, "qixqi", 'f', "19818965587", "default.png", "1999-12-14", df.format(new Date()), df.format(new Date()), df.format(new Date()));
+        PanFriend friend3 = new PanFriend(13, "qixqi", 'f', "19818965587", "default.png", "1999-12-14", df.format(new Date()), df.format(new Date()), df.format(new Date()));
 
-        List<Friend> friend_list = new ArrayList<>();
+        List<PanFriend> friend_list = new ArrayList<>();
         friend_list.add(friend1);
         friend_list.add(friend2);
         friend_list.add(friend3);
@@ -65,7 +65,7 @@ public class Test{
         // }
 
 
-        Message message = new Message(207794, 207794, "张雪花", "default-icon.png", 801935, 'f', 'w', "I love you, heihei", df.format(new Date()), 'i');
+        PanMessage message = new PanMessage(207794, 207794, "张雪花", "default-icon.png", 801935, 'f', 'w', "I love you, heihei", df.format(new Date()), 'i');
         // System.out.println(JSON.toJSONString(message));
 
 
@@ -136,8 +136,8 @@ public class Test{
 
         
 
-        List<FileLink> folderList = null;
-        List<FileLink> fileList = null;
+        List<PanFileLink> folderList = null;
+        List<PanFileLink> fileList = null;
         // System.out.println(JSON.toJSONString(folderList));
         JSONObject folderJson = (JSONObject) JSON.toJSON(folderList);
         JSONObject fileJson = (JSONObject) JSON.toJSON(fileList);

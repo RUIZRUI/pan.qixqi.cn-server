@@ -15,7 +15,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cn.qixqi.pan.entity.Sessions;
+import cn.qixqi.pan.entity.PanSession;
 
 public class SessionsUtil{
     private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -100,7 +100,7 @@ public class SessionsUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static boolean add(Sessions sessions) throws NamingException, SQLException{
+    public static boolean add(PanSession sessions) throws NamingException, SQLException{
         boolean flag = false;
         if(sessions == null){
             return flag;
@@ -109,15 +109,15 @@ public class SessionsUtil{
         String sql = "insert into qqsession (userId, chatId, userId1, userId2, last_msg, last_username, last_time, last_msg_type, chat_type) " +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setInt(1, sessions.getUserId());
-        pst.setInt(2, sessions.getChatId());
-        pst.setInt(3, sessions.getUserId1());
-        pst.setInt(4, sessions.getUserId2());
+        pst.setInt(1, sessions.getUid());
+        pst.setInt(2, sessions.getSessionId());
+        pst.setInt(3, sessions.getUid1());
+        pst.setInt(4, sessions.getUid2());
         pst.setString(5, sessions.getLastMsg());
-        pst.setString(6, sessions.getLastUsername());
-        pst.setString(7, sessions.getLastTime());
+        pst.setString(6, sessions.getLastMsgUsername());
+        pst.setString(7, sessions.getLastMsgTime());
         pst.setString(8, Character.toString(sessions.getLastMsgType()));
-        pst.setString(9, Character.toString(sessions.getChatType()));
+        pst.setString(9, Character.toString(sessions.getSessionType()));
         // pst.setInt(10, sessions.getUnreadCount());
         pst.executeUpdate();
         pst.close();
@@ -276,12 +276,12 @@ public class SessionsUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static List<Sessions> searchAll(int userId) throws NamingException, SQLException{
+    public static List<PanSession> searchAll(int userId) throws NamingException, SQLException{
         if(userId < 100000){
             return null;
         }
         initConn();
-        List<Sessions> session_list = new ArrayList<>();
+        List<PanSession> session_list = new ArrayList<>();
         String sql = "select userId, chatId, userId1, userId2, user1.username, user2.username, user1.icon, user2.icon, last_msg, last_username, last_time, last_msg_type, chat_type  " +
             "from qqsession, qquser user1, qquser user2 " +
             "where (userId1 = ? or userId2 = ?) and userId1 = user1.id and userId2 = user2.id";
@@ -305,7 +305,7 @@ public class SessionsUtil{
             char last_msg_type = rs.getString("last_msg_type").toCharArray()[0];
             char chat_type = rs.getString("chat_type").toCharArray()[0];
             // int unread_count = rs.getInt("unread_count");
-            Sessions sessions = new Sessions(_userId, chatId, userId1, userId2, username1, username2, userIcon1, userIcon2, last_msg, last_username, last_time, last_msg_type, chat_type);
+            PanSession sessions = new PanSession(_userId, chatId, userId1, userId2, username1, username2, userIcon1, userIcon2, last_msg, last_username, last_time, last_msg_type, chat_type);
             session_list.add(sessions);
         }
         rs.close();
@@ -325,8 +325,8 @@ public class SessionsUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static Sessions search(int chatId) throws NamingException, SQLException{
-        Sessions sessions = null;
+    public static PanSession search(int chatId) throws NamingException, SQLException{
+        PanSession sessions = null;
         if(chatId < 1000000){
             return sessions;
         }
@@ -352,7 +352,7 @@ public class SessionsUtil{
             char last_msg_type = rs.getString("last_msg_type").toCharArray()[0];
             char chat_type = rs.getString("chat_type").toCharArray()[0];
             // int unread_count = rs.getInt("unread_count");
-            sessions = new Sessions(_userId, chatId, userId1, userId2, username1, username2, userIcon1, userIcon2, last_msg, last_username, last_time, last_msg_type, chat_type);
+            sessions = new PanSession(_userId, chatId, userId1, userId2, username1, username2, userIcon1, userIcon2, last_msg, last_username, last_time, last_msg_type, chat_type);
         }
         rs.close();
         pst.close();
@@ -369,8 +369,8 @@ public class SessionsUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static Sessions search(int userId1, int userId2) throws NamingException, SQLException{
-        Sessions sessions = null;
+    public static PanSession search(int userId1, int userId2) throws NamingException, SQLException{
+        PanSession sessions = null;
         if(userId1 < 100000 || userId2 < 100000){
             return sessions;
         }
@@ -400,7 +400,7 @@ public class SessionsUtil{
             char last_msg_type = rs.getString("last_msg_type").toCharArray()[0];
             char chat_type = rs.getString("chat_type").toCharArray()[0];
             // int unread_count = rs.getInt("unread_count");
-            sessions = new Sessions(_userId, chatId, _userId1, _userId2, username1, username2, userIcon1, userIcon2, last_msg, last_username, last_time, last_msg_type, chat_type);
+            sessions = new PanSession(_userId, chatId, _userId1, _userId2, username1, username2, userIcon1, userIcon2, last_msg, last_username, last_time, last_msg_type, chat_type);
         }
         rs.close();
         pst.close();

@@ -14,7 +14,7 @@ import javax.naming.NamingException;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.qixqi.pan.entity.Message;
+import cn.qixqi.pan.entity.PanMessage;
 import cn.qixqi.pan.util.MessageUtil;
 
 
@@ -42,7 +42,7 @@ public class Messages extends HttpServlet{
             String method = request.getParameter("method");
             if("add".equals(method)){
                 int msgId = (int)((Math.random()*9+1)*1000000);     // 7位随机数
-                Message addMessage = JSON.parseObject(request.getParameter("message"), Message.class);
+                PanMessage addMessage = JSON.parseObject(request.getParameter("message"), PanMessage.class);
                 addMessage.setMsgId(msgId);
                 boolean flag = MessageUtil.add(addMessage);
                 if(flag){
@@ -52,7 +52,7 @@ public class Messages extends HttpServlet{
                 }
             
             }else if("searchAll".equals(method)){
-                List<Message> messageList;
+                List<PanMessage> messageList;
                 int userId1 = Integer.parseInt(request.getParameter("userId1"));
                 if(request.getParameter("userId2") == null){
                     messageList = MessageUtil.searchAll(userId1);

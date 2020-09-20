@@ -21,9 +21,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.qixqi.pan.entity.Files;
+import cn.qixqi.pan.entity.PanFile;
 import cn.qixqi.pan.util.FilesUtil;
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFileLink;
 import cn.qixqi.pan.util.FileLinkUtil;
 
 
@@ -138,14 +138,14 @@ public class FileUpload extends HttpServlet{
                             int linkNum = 0;
                             String createTime = df.format(new Date());
                             String lastUseTime = null;
-                            Files files = new Files(fileId, fileName, fileType, fileSize, linkNum, createTime, lastUseTime);
+                            PanFile files = new PanFile(fileId, fileName, fileType, fileSize, linkNum, createTime, lastUseTime);
                             // System.out.println("fileType: " + fileType);
                             FilesUtil.add(files);
                             System.out.println(files.toString());
                         
                             // 新建FileLink对象
                             int linkId = (int)((Math.random()*9+1)*1000000);
-                            FileLink fileLink = new FileLink(linkId, userId, fileId, fileName, fileType, fileSize, 'n', null, null, null, 'n', parent, createTime);
+                            PanFileLink fileLink = new PanFileLink(linkId, userId, fileId, fileName, fileType, fileSize, 'n', null, null, null, 'n', parent, createTime);
                             FileLinkUtil.add(fileLink);
 
                             // 父文件夹添加子文件链接

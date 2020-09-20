@@ -15,7 +15,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cn.qixqi.pan.entity.Friend;
+import cn.qixqi.pan.entity.PanFriend;
 
 /**
  * 1. 删除时如果表中没有此条目应该返回 false
@@ -131,9 +131,9 @@ public class FriendsUtil{
      * 查找用户所有好友
      * @param userId
      */
-    public static List<Friend> searchAll(int userId) throws NamingException, SQLException{
+    public static List<PanFriend> searchAll(int userId) throws NamingException, SQLException{
         initConn();
-        List<Friend> friendList = new ArrayList<>();
+        List<PanFriend> friendList = new ArrayList<>();
         String sql = "select u.id, u.username, u.sex, u.phone_num, u.icon, u.birthday, u.register_time, u.last_login_time, f.relation_time " + 
             "from qquser as u join qqfriends as f " +
             "on u.id = f.userId2 " +
@@ -165,7 +165,7 @@ public class FriendsUtil{
             // System.out.println("register_time = " + register_time);
             Date last_login_time = rs.getTimestamp(8);
             Date relation_time = rs.getTimestamp(9);
-            Friend friend = new Friend(id, username, sex, phone_num, icon, birthday, df.format(register_time), df.format(last_login_time), df.format(relation_time));
+            PanFriend friend = new PanFriend(id, username, sex, phone_num, icon, birthday, df.format(register_time), df.format(last_login_time), df.format(relation_time));
             friendList.add(friend);
         }
         return friendList;

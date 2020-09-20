@@ -16,7 +16,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFileLink;
 
 
 /**
@@ -99,7 +99,7 @@ public class FileLinkUtil{
      * @throws SQLException
      * @throws NamingException
      */
-    public static boolean add(FileLink fileLink) throws SQLException, NamingException{
+    public static boolean add(PanFileLink fileLink) throws SQLException, NamingException{
         boolean flag = false;
         if(fileLink == null){ 
             return flag;
@@ -108,7 +108,7 @@ public class FileLinkUtil{
         String sql = "insert into qqfile_link (linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setInt(1, fileLink.getLinkId());
-        pst.setInt(2, fileLink.getUserId());
+        pst.setInt(2, fileLink.getUid());
         pst.setInt(3, fileLink.getFileId());
         pst.setString(4, fileLink.getFileName());
         pst.setString(5, fileLink.getFileType());
@@ -264,8 +264,8 @@ public class FileLinkUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static FileLink getRootFolder(int userId) throws NamingException, SQLException{
-        FileLink fileLink = null;
+    public static PanFileLink getRootFolder(int userId) throws NamingException, SQLException{
+        PanFileLink fileLink = null;
         if(userId < 100000){
             return fileLink;
         }
@@ -288,7 +288,7 @@ public class FileLinkUtil{
             char isRoot = rs.getString("isRoot").toCharArray()[0];
             int parent = rs.getInt("parent");
             String createLinkTime = rs.getString("createLinkTime");
-            fileLink = new FileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
+            fileLink = new PanFileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
         }
         rs.close();
         pst.close();
@@ -305,8 +305,8 @@ public class FileLinkUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static FileLink SearchOne(int linkId) throws NamingException, SQLException{
-        FileLink fileLink = null;
+    public static PanFileLink SearchOne(int linkId) throws NamingException, SQLException{
+        PanFileLink fileLink = null;
         if(linkId < 1000000){
             return fileLink;
         }
@@ -329,7 +329,7 @@ public class FileLinkUtil{
             int parent = rs.getInt("parent");
             // String createLinkTime = rs.getString("createLinkTime");
             String createLinkTime = simpleDf.format(rs.getTimestamp("createLinkTime"));
-            fileLink = new FileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
+            fileLink = new PanFileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
         }
         rs.close();
         pst.close();
@@ -346,8 +346,8 @@ public class FileLinkUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static List<FileLink> SearchAll(int userId) throws NamingException, SQLException{
-        List<FileLink> fileLinks = new ArrayList<>();
+    public static List<PanFileLink> SearchAll(int userId) throws NamingException, SQLException{
+        List<PanFileLink> fileLinks = new ArrayList<>();
         if(userId < 100000){
             return null;
         }
@@ -370,7 +370,7 @@ public class FileLinkUtil{
             int parent = rs.getInt("parent");
             // String createLinkTime = rs.getString("createLinkTime");
             String createLinkTime = simpleDf.format(rs.getTimestamp("createLinkTime"));
-            FileLink fileLink = new FileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
+            PanFileLink fileLink = new PanFileLink(linkId, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList, isRoot, parent, createLinkTime);
             fileLinks.add(fileLink);
         }
         rs.close();
@@ -392,8 +392,8 @@ public class FileLinkUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static List<FileLink> parseFile(int linkId) throws NamingException, SQLException{
-        List<FileLink> fileLinks = new ArrayList<>();
+    public static List<PanFileLink> parseFile(int linkId) throws NamingException, SQLException{
+        List<PanFileLink> fileLinks = new ArrayList<>();
         if(linkId < 1000000 || getFileList(linkId)==null){
             return null;
         }
@@ -426,7 +426,7 @@ public class FileLinkUtil{
             int parent = rs.getInt("parent");
             // String createLinkTime = rs.getString("createLinkTime");
             String createLinkTime = simpleDf.format(rs.getTimestamp("createLinkTime"));
-            FileLink fileLink = new FileLink(linkId1, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList1, folderList, isRoot, parent, createLinkTime);
+            PanFileLink fileLink = new PanFileLink(linkId1, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList1, folderList, isRoot, parent, createLinkTime);
             fileLinks.add(fileLink);
         }
         rs.close();
@@ -447,8 +447,8 @@ public class FileLinkUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static List<FileLink> parseFolder(int linkId) throws NamingException, SQLException{
-        List<FileLink> fileLinks = new ArrayList<>();
+    public static List<PanFileLink> parseFolder(int linkId) throws NamingException, SQLException{
+        List<PanFileLink> fileLinks = new ArrayList<>();
         if(linkId < 1000000 || getFolderList(linkId)==null){
             return null;
         }
@@ -481,7 +481,7 @@ public class FileLinkUtil{
             int parent = rs.getInt("parent");
             // String createLinkTime = rs.getString("createLinkTime");
             String createLinkTime = simpleDf.format(rs.getTimestamp("createLinkTime"));
-            FileLink fileLink = new FileLink(linkId1, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList1, isRoot, parent, createLinkTime);
+            PanFileLink fileLink = new PanFileLink(linkId1, userId, fileId, fileName, fileType, fileSize, isFolder, folderName, fileList, folderList1, isRoot, parent, createLinkTime);
             fileLinks.add(fileLink);
         }
         rs.close();

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.WebServlet;
 
 import cn.qixqi.pan.util.FriendsUtil;
-import cn.qixqi.pan.entity.Friend;
+import cn.qixqi.pan.entity.PanFriend;
 
 import com.alibaba.fastjson.JSON;
 
@@ -64,7 +64,7 @@ public class Friends extends HttpServlet{
                 if(request.getParameter("userId1") != null){
                     userId1 = Integer.parseInt(request.getParameter("userId1"));
                 }
-                List<Friend> friend_list = FriendsUtil.searchAll(userId1);
+                List<PanFriend> friend_list = FriendsUtil.searchAll(userId1);
                 if(friend_list.isEmpty()){
                     message = "empty";
                 }else{

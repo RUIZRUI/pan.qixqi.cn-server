@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.annotation.WebServlet;
 
-import cn.qixqi.pan.entity.Sessions;
+import cn.qixqi.pan.entity.PanSession;
 import cn.qixqi.pan.util.SessionsUtil;
 
 import com.alibaba.fastjson.JSON;
@@ -47,7 +47,7 @@ public class SessionServlet extends HttpServlet{
                 String username1 = request.getParameter("username1");
                 int userId2 = Integer.parseInt(request.getParameter("userId2"));
                 int chatId = (int)((Math.random()*9+1)*1000000);    // 7位随机数
-                Sessions sessions = new Sessions(userId1, chatId, userId1, userId2, "我们已经是好友了，快来聊天吧！", username1, 
+                PanSession sessions = new PanSession(userId1, chatId, userId1, userId2, "我们已经是好友了，快来聊天吧！", username1, 
                     df.format(new Date()), 'w', 'f');
                 boolean flag = SessionsUtil.add(sessions);
                 if(flag){
@@ -58,7 +58,7 @@ public class SessionServlet extends HttpServlet{
             }else if("searchAll".equals(method)){
                 // todo 获取userId判断
                 int userId = Integer.parseInt(request.getParameter("userId"));
-                List<Sessions> sessionsList = SessionsUtil.searchAll(userId);
+                List<PanSession> sessionsList = SessionsUtil.searchAll(userId);
                 if(sessionsList != null){
                     message = JSON.toJSONString(sessionsList);
                 }else{

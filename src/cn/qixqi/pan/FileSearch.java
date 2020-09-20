@@ -16,7 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFileLink;
 import cn.qixqi.pan.util.FileLinkUtil;
 
 
@@ -52,8 +52,8 @@ public class FileSearch extends HttpServlet{
                     if(!FileLinkUtil.isFolder(linkId)){
                         message.put("error", "要查找的不是文件夹");
                     }else{
-                        List<FileLink> folderList = FileLinkUtil.parseFolder(linkId);
-                        List<FileLink> fileList = FileLinkUtil.parseFile(linkId);
+                        List<PanFileLink> folderList = FileLinkUtil.parseFolder(linkId);
+                        List<PanFileLink> fileList = FileLinkUtil.parseFile(linkId);
                         // JSONObject folderJson = (JSONObject) JSON.toJSON(folderList);
                         // JSONObject fileJson = (JSONObject) JSON.toJSON(fileList);
                         JSONArray folderJson = JSONArray.parseArray(JSON.toJSONString(folderList));
@@ -67,7 +67,7 @@ public class FileSearch extends HttpServlet{
                     message.put("error", "请正确输入信息");
                 }else{
                     int userId = Integer.parseInt(request.getParameter("userId"));
-                    FileLink fileLink = FileLinkUtil.getRootFolder(userId);
+                    PanFileLink fileLink = FileLinkUtil.getRootFolder(userId);
                     // System.out.println(fileLink.toString());
                     JSONObject rootFolder = (JSONObject) JSON.toJSON(fileLink);
                     // System.out.println(rootFolder.toJSONString());

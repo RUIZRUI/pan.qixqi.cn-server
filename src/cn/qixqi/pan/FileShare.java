@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.qixqi.pan.entity.FileLink;
+import cn.qixqi.pan.entity.PanFileLink;
 import cn.qixqi.pan.util.FileLinkUtil;
 import cn.qixqi.pan.util.FileShareUtil;
 
@@ -69,7 +69,7 @@ public class FileShare extends HttpServlet{
                     if(linkId == -1){
                         message.put("error", "分享链接不存在或已失效");
                     } else{
-                        FileLink fileLink = FileLinkUtil.SearchOne(linkId);
+                        PanFileLink fileLink = FileLinkUtil.SearchOne(linkId);
                         JSONObject shareFile = (JSONObject) JSON.toJSON(fileLink);
                         message.put("response", shareFile);
                     }
@@ -83,7 +83,7 @@ public class FileShare extends HttpServlet{
                     int linkId = Integer.parseInt(request.getParameter("linkId"));
                     int userId = Integer.parseInt(request.getParameter("userId"));
                     int parent = Integer.parseInt(request.getParameter("parent"));
-                    FileLink shareFileLink = FileLinkUtil.SearchOne(linkId);
+                    PanFileLink shareFileLink = FileLinkUtil.SearchOne(linkId);
                     if(shareFileLink == null){
                         message.put("error", "没有此文件链接");
                     } else{
@@ -98,7 +98,7 @@ public class FileShare extends HttpServlet{
                         String folderList1 = shareFileLink.getFolderList();
                         char isRoot1 = shareFileLink.getIsRoot();
                         String createLinkTime = df.format(new Date());
-                        FileLink fileLink = new FileLink(linkId1, userId, fileId1, fileName1, fileType1, fileSize1, isFolder1, folderName1, fileList1, folderList1, isRoot1, parent, createLinkTime);
+                        PanFileLink fileLink = new PanFileLink(linkId1, userId, fileId1, fileName1, fileType1, fileSize1, isFolder1, folderName1, fileList1, folderList1, isRoot1, parent, createLinkTime);
                         if(FileLinkUtil.add(fileLink)){
                             if(isFolder1 == 'y'){       // 父文件夹添加子文件夹
                                 FileLinkUtil.addChildFolder(parent, linkId1);

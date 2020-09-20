@@ -13,7 +13,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cn.qixqi.pan.entity.User;
+import cn.qixqi.pan.entity.PanUser;
 
 /**
  * todo 
@@ -99,7 +99,7 @@ public class UserUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static boolean add(User user) throws NamingException, SQLException{
+    public static boolean add(PanUser user) throws NamingException, SQLException{
         boolean flag = false;
         if(user == null){
             return flag;
@@ -107,7 +107,7 @@ public class UserUtil{
         initConn();
         String sql = "insert into qquser(id, username, password, sex, phone_num, register_time, last_login_time) values (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setInt(1, user.getUserId());
+        pst.setInt(1, user.getUid());
         pst.setString(2, user.getUserName());
         pst.setString(3, user.getPassword());
         pst.setString(4, Character.toString(user.getSex()));
@@ -279,7 +279,7 @@ public class UserUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static User loginSearch(int userId, String password) throws NamingException, SQLException{
+    public static PanUser loginSearch(int userId, String password) throws NamingException, SQLException{
         if(userId < 100000){
             return null;
         }
@@ -289,7 +289,7 @@ public class UserUtil{
         pst.setInt(1, userId);
         pst.setString(2, password);
         ResultSet rs = pst.executeQuery();
-        User user = null;
+        PanUser user = null;
         if(rs.next()){
             String username = rs.getString("username");
             char sex = rs.getString("sex").toCharArray()[0];
@@ -298,7 +298,7 @@ public class UserUtil{
             String birthday = df_birthday.format(rs.getDate("birthday"));
             String registerTime = df.format(rs.getTimestamp("register_time"));
             String lastLoginTime = df.format(rs.getTimestamp("last_login_time"));
-            user = new User(userId, username, password, sex, phoneNum, icon, birthday, registerTime, lastLoginTime);
+            user = new PanUser(userId, username, password, sex, "", phoneNum, icon, birthday, registerTime, lastLoginTime);
         }
         rs.close();
         pst.close();
@@ -314,7 +314,7 @@ public class UserUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static User strangerSearch(int userId) throws NamingException, SQLException{
+    public static PanUser strangerSearch(int userId) throws NamingException, SQLException{
         if(userId < 100000){
             return null;
         }
@@ -323,12 +323,12 @@ public class UserUtil{
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setInt(1, userId);
         ResultSet rs = pst.executeQuery();
-        User user = null;
+        PanUser user = null;
         if(rs.next()){
             String username = rs.getString("username");
             String icon = rs.getString("icon");
             String registerTime = df.format(rs.getTimestamp("register_time"));
-            user = new User(userId, username, icon, registerTime);
+            user = new PanUser(userId, username, 'u', icon, registerTime);
         }
         rs.close();
         pst.close();
@@ -344,7 +344,7 @@ public class UserUtil{
      * @throws NamingException
      * @throws SQLException
      */
-    public static User strangerSearch(String phoneNum) throws NamingException, SQLException{
+    public static PanUser strangerSearch(String phoneNum) throws NamingException, SQLException{
         if(phoneNum.length() > 11){
             return null;
         }
@@ -353,13 +353,13 @@ public class UserUtil{
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setString(1, phoneNum);
         ResultSet rs = pst.executeQuery();
-        User user = null;
+        PanUser user = null;
         if(rs.next()){
             int userId = rs.getInt("id");
             String username = rs.getString("username");
             String icon = rs.getString("icon");
             String registerTime = df.format(rs.getTimestamp("register_time"));
-            user = new User(userId, username, icon, registerTime);
+            user = new PanUser(userId, username, 'u', icon, registerTime);
         }
         rs.close();
         pst.close();
