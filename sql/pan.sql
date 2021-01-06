@@ -77,7 +77,7 @@ create table if not exists `pan_room_member`(
 
 -- 会话表
 create table if not exists `pan_session`(
-    `session_id` int(11) unique,       -- 会话id，标示双方聊天的会话是同一个，一个用户可以有多个会话，而同一个会话，对应了两个或多个用户
+    `session_id` int(11) auto_increment, -- unique,       -- 会话id，标示双方聊天的会话是同一个，一个用户可以有多个会话，而同一个会话，对应了两个或多个用户
     `uid` int(11),       -- 所属消息，多用户登录时区分会话表
     `uid1` int(11),      -- 发送人id
     `uid2` int(11),      -- 接受人id
@@ -87,7 +87,8 @@ create table if not exists `pan_session`(
     `last_msg_type` char(1),  -- 最后一条消息类型(文字'w'/图片'p'/文佳你'f'/音乐'a')
     `session_type` char(1),    -- 会话类型(群组'r'/好友'f')     
     -- `unread_count` int(8)  -- 该会话未读消息数，应该只存在于本地表中
-    primary key(`uid1`, `uid2`),
+    -- primary key(`uid1`, `uid2`),
+    primary key(`session_id`),
     foreign key(`uid`) references pan_user(`uid`)
     on delete cascade on update cascade,
     foreign key(`uid1`) references pan_user(`uid`)
@@ -96,6 +97,12 @@ create table if not exists `pan_session`(
     on delete cascade on update cascade
 ) ENGINE=InnoDB default charset=utf8;
 
+-- 获取会话列表
+select s.session_id, s.uid1, s.uid2, u1.username, u2.username, u1.avatar, u2.avatar, s.last_msg, s.last_msg_username, last_msg_time, last_msg_type, session_type
+from pan_session as s 
+join pan_user as u1 on s.uid1 = u1.uid
+join pan_user as u2 on s.uid2 = u2.uid
+where s.uid = ?;
 
 
 
@@ -103,11 +110,11 @@ create table if not exists `pan_session`(
 -- 聊天记录表
 create table if not exists `pan_message`(
     -- `id` int(11) auto_increment primary key,
-    `msg_id` int(11) primary key,       -- 可能是便于同步
+    `msg_id` int(11) auto_increment primary key,       -- 可能是便于同步
     `uid` int(11),       -- 所属者，多用户登录
     `uid1` int(11),      -- 发送人id
-    `username1` varchar(255), -- 发送人名称
-    `avatar1` varchar(255), -- 发送人头像
+    -- `username1` varchar(255), -- 发送人名称
+    -- `avatar1` varchar(255), -- 发送人头像
     `receiver_id` int(11),      -- 接收者(uid/room_id)
     `session_type` char(1), 
     `msg` varchar(255),     -- 消息内容
@@ -120,7 +127,17 @@ create table if not exists `pan_message`(
     on delete cascade on update cascade
 ) ENGINE=InnoDB default charset=utf8;
 
+-- 获取消息列表
+select m.msg_id, m.uid, m.uid1, u.username, u.avatar, m.receiver_id, m.session_type, m.msg, m.msg_type, m.msg_time, m.msg_status
+from pan_message as m join pan_user as u
+on m.uid1 = u.uid
+where (m.uid1 = ? and m.receiver_id = ?) or (m.uid1 = ? and m.receiver_id = ?);
 
+-- 获取一条消息
+select m.uid, m.uid1, u.username, u.avatar, m.receiver_id, m.session_type, m.msg, m.msg_type, m.msg_time, m.msg_status
+from pan_message as m join pan_user as u
+on m.uid1 = u.uid
+where m.msg_id = ?;
 
 
 -- 获取好友列表
@@ -156,7 +173,7 @@ where (uid1 = ? or uid2 = ?) and uid1 = user1.uid and uid2 = user2.uid;
 
 -- 文件实体表
 create table if not exists `pan_file`(
-    `file_id` int(11) not null,     
+    `file_id` int(11) auto_increment,     
     `file_name` varchar(255) not null,
     `file_type` varchar(25),
     `file_size` int(15),     -- 文件大小，单位B
@@ -165,6 +182,12 @@ create table if not exists `pan_file`(
     primary key(`file_id`)
 ) ENGINE=InnoDB default charset=utf8;
 
+-- 更新 link_num
+update pan_file set link_num = (
+	select link_num + ?
+	from pan_file
+	where file_id = ?
+) where file_id = ?;
 
 
 -- 文件链接表
@@ -204,12 +227,26 @@ create table if not exists `pan_folder`(
 	on delete cascade on update cascade
 ) ENGINE=InnoDB default charset=utf8;
 
+-- 获取父文件夹
+select f2.folder_id, f2.uid, f2.folder_name, f2.parent, f2.create_folder_time
+from pan_folder as f1 join pan_folder as f2
+on f1.parent = f2.folder_id
+where f1.folder_id = ?;
+
+-- 获取子文件夹列表
+select f2.folder_id, f2.uid, f2.folder_name, f2.parent, f2.create_folder_time
+from pan_folder as f1 join pan_folder as f2
+on f1.folder_id = f2.parent
+where f1.folder_id = ?;
+
+
+
 -- 文件链接表
 create table if not exists `pan_file_link`(
 	`link_id` int(11) auto_increment primary key,
 	`uid` int(11) not null,
 	`file_id` int(11) not null,
-	`file_name` varchar(255) not null,
+	`link_name` varchar(255) not null,		-- 链接名
 	`parent` int(11) not null,		-- 父文件夹id
 	`create_link_time` timestamp default CURRENT_TIMESTAMP,
 	foreign key(`uid`) references pan_user(`uid`)
@@ -219,6 +256,16 @@ create table if not exists `pan_file_link`(
 	foreign key(`parent`) references pan_folder(`folder_id`)
 	on delete cascade on update cascade
 ) ENGINE=InnoDB default charset=utf8;
+
+-- 获取文件大小
+select file_size
+from pan_file_link natural join pan_file
+where link_id = ?;
+
+-- 获取子文件链接列表
+select link_id, uid, file_id, link_name, file_type, file_size, create_link_time
+from pan_file_link natural join pan_file
+where parent = ?;
 
 
 
@@ -237,12 +284,15 @@ where pan_file_link.link_id = ? and pan_file.file_id = pan_file_link.file_id
 -- 分享链接表
 create table if not exists `pan_file_share`(
     `share_id` int(11) auto_increment primary key,
+    `uid` int(11) not null,				-- 分享人id
     `source_id` int(11) not null,		-- 资源id, 可以是link_id，也可以是folder_id
     `share_type` int(1) default 0,		-- 分享类型，(0文件分享/1文件夹分享）
-    `share_mask` varchar(255) not null,      -- 掩码
+    `share_mask` varchar(255) not null unique,      -- 掩码
     `share_pass` char(4) not null,        -- 4位提取码
     `create_share_time` timestamp default CURRENT_TIMESTAMP,      -- 创建时间
-    `end_share_time` timestamp        -- 分享结束时间
+    `end_share_time` timestamp,        -- 分享结束时间
+    foreign key(`uid`) references pan_user(`uid`)
+    on delete cascade on update cascade
 ) ENGINE=InnoDB default charset=utf8;
 
 

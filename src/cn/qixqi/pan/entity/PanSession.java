@@ -41,7 +41,6 @@ public class PanSession {
     /**
      * qqsession表
      * @param uid
-     * @param sessionId
      * @param uid1
      * @param uid2
      * @param lastMsg
@@ -50,10 +49,10 @@ public class PanSession {
      * @param lastMsgType
      * @param sessionType
      */
-    public PanSession(int uid, int sessionId, int uid1, int uid2, String lastMsg, String lastMsgUsername,
+    public PanSession(int uid, int uid1, int uid2, String lastMsg, String lastMsgUsername,
                    Date lastMsgTime, char lastMsgType, char sessionType){
         this.uid = uid;
-        this.sessionId = sessionId;   // 暂时设定为7位随机数
+        // this.sessionId = sessionId;   // 暂时设定为7位随机数
         this.uid1 = uid1;
         this.uid2 = uid2;
         this.lastMsg = lastMsg;

@@ -19,19 +19,43 @@ public class PanMessage{
         super();
     }
 
-    public PanMessage( int uid, int uid1, String username1, String avatar1, int receiverId, char sessionType, char msgType, String msg, Date msgTime, char msgStatus) {
+    /**
+     * add 构造函数
+     * @param uid
+     * @param uid1
+     * @param username1
+     * @param avatar1
+     * @param receiverId
+     * @param sessionType
+     * @param msgType
+     * @param msg
+     * @param msgStatus
+     */
+    public PanMessage( int uid, int uid1, int receiverId, char sessionType, char msgType, String msg, char msgStatus) {
         this.uid = uid;
         this.uid1 = uid1;
-        this.username1 = username1;
-        this.avatar1 = avatar1;
         this.receiverId = receiverId;
         this.sessionType = sessionType;
         this.msgType = msgType;
         this.msg = msg;
-        this.msgTime = msgTime;
+        // this.msgTime = msgTime;
         this.msgStatus = msgStatus;
     }
 
+    /**
+     * 查询构造函数
+     * @param msgId
+     * @param uid
+     * @param uid1
+     * @param username1
+     * @param avatar1
+     * @param receiverId
+     * @param sessionType
+     * @param msgType
+     * @param msg
+     * @param msgTime
+     * @param msgStatus
+     */
     public PanMessage(int msgId, int uid, int uid1, String username1, String avatar1, int receiverId, char sessionType, char msgType, String msg, Date msgTime, char msgStatus) {
         this.msgId = msgId;
         this.uid = uid;

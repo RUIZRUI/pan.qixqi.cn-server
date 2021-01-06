@@ -3,7 +3,7 @@ package cn.qixqi.pan.entity;
 import java.util.Date;
 
 public class PanFile{
-    private int fileId;     // 7位随机数
+    private int fileId;     // auto_increment
     private String fileName;
     private String fileType;
     private long fileSize;
@@ -11,6 +11,15 @@ public class PanFile{
     private Date createTime;
 
     
+    /**
+     * search
+     * @param fileId
+     * @param fileName
+     * @param fileType
+     * @param fileSize
+     * @param linkNum
+     * @param createTime
+     */
     public PanFile(int fileId, String fileName, String fileType, long fileSize, int linkNum, Date createTime) {
         this.fileId = fileId;
         this.fileName = fileName;
@@ -21,12 +30,16 @@ public class PanFile{
     }
 
 
-    public PanFile(int fileId, String fileName, String fileType, long fileSize, Date createTime){
-        this.fileId = fileId;
+    /**
+     * add 
+     * @param fileName
+     * @param fileType
+     * @param fileSize
+     */
+    public PanFile(String fileName, String fileType, long fileSize){
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileSize = fileSize;
-        this.createTime = createTime;
     }
 
     

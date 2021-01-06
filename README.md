@@ -9,12 +9,26 @@
     # 实时查看日志，在tomcat/logs下执行
     tail -f catalina.out
     ```
+5. JAVA char 转 String
+	```java
+	String.valueOf('c');		// 效率最高
+	```
 
 
 
 ### Problems
 
 1. 文件上传需要的jar包，commons-fileupload.jar, commons-io.jar, commons-logging.jar（可能需要）
+
+2. Session 的作用是什么，目前服务器端数据库保存的Session好友双方共有，可以在客户端数据库保存各自的Session
+
+3. pan_session 表的主键是 `session_id`，如何保证 uid1 和 uid2 之间只存在一条记录
+
+4. pan_message delete(uid1, uid2) 清空消息双向
+
+5. pan_folder 查询父文件夹、子文件夹，连接时parent为null时，是否会出现异常或错误
+
+6. pan_file 查询 select link_num + ?，合法吗
 
 
 ## Web网盘后端实现

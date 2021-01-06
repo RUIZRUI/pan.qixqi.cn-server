@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class PanFileShare {
 	private int shareId;
+	private int uid;
 	private int sourceId;
 	private int shareType;		// 分享类型（0文件分享/1文件夹分享）
 	private String shareMask;
@@ -15,13 +16,15 @@ public class PanFileShare {
 	/**
 	 * 生成分享链接
 	 * @param sourceId
+	 * @param uid
 	 * @param shareMask
 	 * @param sharePass
 	 * @param endShareTime
 	 */
-	public PanFileShare(int sourceId, int shareType, String shareMask, String sharePass, Date endShareTime) {
+	public PanFileShare(int sourceId, int uid, int shareType, String shareMask, String sharePass, Date endShareTime) {
 		super();
 		this.sourceId = sourceId;
+		this.uid = uid;
 		this.shareType = shareType;
 		this.shareMask = shareMask;
 		this.sharePass = sharePass;
@@ -31,16 +34,18 @@ public class PanFileShare {
 	/**
 	 * 获取分享链接
 	 * @param shareId
+	 * @param uid
 	 * @param sourceId
 	 * @param shareMask
 	 * @param sharePass
 	 * @param createShareTime
 	 * @param endShareTime
 	 */
-	public PanFileShare(int shareId, int sourceId, int shareType, String shareMask, String sharePass, Date createShareTime,
+	public PanFileShare(int shareId, int uid, int sourceId, int shareType, String shareMask, String sharePass, Date createShareTime,
 			Date endShareTime) {
 		super();
 		this.shareId = shareId;
+		this.uid = uid;
 		this.sourceId = sourceId;
 		this.shareType = shareType;
 		this.shareMask = shareMask;
@@ -55,6 +60,14 @@ public class PanFileShare {
 
 	public void setShareId(int shareId) {
 		this.shareId = shareId;
+	}
+	
+	public int getUid() {
+		return uid;
+	}
+	
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	public int getSourceId() {
@@ -107,8 +120,8 @@ public class PanFileShare {
 
 	@Override
 	public String toString() {
-		return "PanFileShare [shareId=" + shareId + ", sourceId=" + sourceId + ", shareType=" + shareType
-				+ ", shareMask=" + shareMask + ", sharePass=" + sharePass + ", createShareTime=" + createShareTime
-				+ ", endShareTime=" + endShareTime + "]";
+		return "PanFileShare [shareId=" + shareId + ", uid=" + uid + ", sourceId=" + sourceId + ", shareType="
+				+ shareType + ", shareMask=" + shareMask + ", sharePass=" + sharePass + ", createShareTime="
+				+ createShareTime + ", endShareTime=" + endShareTime + "]";
 	}
 }
